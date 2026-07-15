@@ -17,8 +17,10 @@ export function Header() {
 
   if (hide) return null;
 
+  const overHero = pathname === "/";
+
   return (
-    <header className="site-header">
+    <header className={`site-header${overHero ? " site-header--over-hero" : ""}`}>
       <div className="site-header__inner">
         <Link href="/" className="brand-mark" aria-label={`${brand.name} home`}>
           {brand.name}

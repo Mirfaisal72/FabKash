@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { brand } from "@/lib/brand";
@@ -27,27 +28,30 @@ export default async function HomePage() {
     <>
       <section className="hero">
         <div className="hero__media" aria-hidden>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://images.unsplash.com/photo-1601924999981-b98e1e8e2c88?w=1800&q=80"
+          <Image
+            src={brand.heroImage}
             alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="hero__photo"
           />
           <div className="hero__veil" />
+          <div className="hero__glow" />
         </div>
         <div className="hero__content">
           <p className="hero__brand">{brand.name}</p>
           <h1 className="hero__headline">{brand.tagline}</h1>
           <p className="hero__support">
-            Wool, pashmina blends, and embroidered wraps — curated for daily wear
-            and thoughtful gifting.
+            Soft pashmina blends and fine wool wraps — made to feel intimate,
+            look effortless, and gift beautifully.
           </p>
           <div className="hero__actions">
-            <Link href="/shop" className="btn btn--teal">
-              Shop shawls
+            <Link href="/shop" className="btn btn--teal btn--hero">
+              Shop the collection
             </Link>
             <a
-              className="btn btn--ghost"
-              style={{ color: "#f4f8fa", borderColor: "rgba(244,248,250,0.35)" }}
+              className="btn btn--ghost-light"
               href={`https://wa.me/${brand.whatsapp}`}
               target="_blank"
               rel="noreferrer"
@@ -58,14 +62,25 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="section section--mood">
+        <div className="page-shell mood-strip">
+          <p className="eyebrow">Feel</p>
+          <h2>Soft enough to keep close. Strong enough to be remembered.</h2>
+          <p className="muted mood-strip__copy">
+            Every piece is chosen for drape, touch, and quiet presence — the kind
+            of wrap that turns an ordinary evening warm.
+          </p>
+        </div>
+      </section>
+
       <section className="section">
         <div className="page-shell">
           <div className="section__head">
             <p className="eyebrow">Featured wraps</p>
-            <h2>Pieces ready to ship</h2>
+            <h2>Ready to fall into</h2>
             <p className="muted">
-              Edit products anytime in{" "}
-              <Link href="/studio">Sanity Studio</Link> — no code needed.
+              A short edit of current favourites — soft textures, rich colour,
+              ready to ship.
             </p>
           </div>
           {featured.length === 0 ? (
