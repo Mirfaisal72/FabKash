@@ -7,8 +7,8 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 
 export default defineConfig({
-  name: "loomora",
-  title: "Loomora",
+  name: "fabkash",
+  title: "FabKash Handloom",
   projectId,
   dataset,
   basePath: "/studio",

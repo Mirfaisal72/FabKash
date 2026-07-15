@@ -5,9 +5,14 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 const token = process.env.SANITY_API_WRITE_TOKEN;
 
-if (!projectId || !token) {
+if (
+  !projectId ||
+  !token ||
+  projectId.startsWith("PASTE_HERE") ||
+  token.startsWith("PASTE_HERE")
+) {
   console.error(
-    "Set NEXT_PUBLIC_SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN in .env first.",
+    "Set real NEXT_PUBLIC_SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN in .env first.",
   );
   process.exit(1);
 }
@@ -20,37 +25,42 @@ const client = createClient({
   useCdn: false,
 });
 
-const sampleImages = [
-  "https://images.unsplash.com/photo-1601924999981-b98e1e8e2c88?w=1200&q=80",
-  "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=1200&q=80",
-  "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=1200&q=80",
-  "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1200&q=80",
-  "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=1200&q=80",
-];
+/** Tiny 1x1 PNG — replace with real shawl photos in Studio. */
+const PLACEHOLDER_PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "base64",
+);
 
-async function uploadFromUrl(url: string) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch ${url}`);
-  const buffer = Buffer.from(await res.arrayBuffer());
-  const asset = await client.assets.upload("image", buffer, {
-    filename: "shawl.jpg",
+async function uploadPlaceholder(filename: string) {
+  const asset = await client.assets.upload("image", PLACEHOLDER_PNG, {
+    filename,
   });
   return {
     _type: "image" as const,
     asset: { _type: "reference" as const, _ref: asset._id },
+    alt: filename,
   };
 }
 
 async function main() {
-  const existing = await client.fetch<number>(
-    `count(*[_type in ["category", "product"]])`,
+  const force = process.argv.includes("--force");
+  const existingIds = await client.fetch<string[]>(
+    `*[_type in ["category", "product"]]._id`,
   );
-  if (existing > 0) {
+  if (existingIds.length > 0 && !force) {
     console.log("Sanity already has content. Skipping seed.");
-    console.log("Delete content in Studio first if you want a fresh seed.");
+    console.log("Run: npm run seed:sanity -- --force");
+    console.log("Or delete Category/Product docs in Studio, then seed again.");
     return;
   }
+  if (force && existingIds.length > 0) {
+    console.log(`Removing ${existingIds.length} existing docs...`);
+    for (const id of existingIds) {
+      await client.delete(id);
+    }
+  }
 
+  console.log("Creating categories...");
   const pashmina = await client.create({
     _type: "category",
     name: "Pashmina Blend",
@@ -79,7 +89,6 @@ async function main() {
       stock: 12,
       featured: true,
       categoryId: wool._id,
-      imageIndex: 0,
     },
     {
       name: "Pearl Meadow",
@@ -92,7 +101,6 @@ async function main() {
       stock: 8,
       featured: true,
       categoryId: pashmina._id,
-      imageIndex: 1,
     },
     {
       name: "Saffron Thread",
@@ -105,7 +113,6 @@ async function main() {
       stock: 10,
       featured: true,
       categoryId: wool._id,
-      imageIndex: 2,
     },
     {
       name: "Kashmir Echo",
@@ -118,12 +125,12 @@ async function main() {
       stock: 6,
       featured: true,
       categoryId: embroidered._id,
-      imageIndex: 4,
     },
   ];
 
+  console.log("Creating products...");
   for (const p of products) {
-    const image = await uploadFromUrl(sampleImages[p.imageIndex]);
+    const image = await uploadPlaceholder(`${p.slug}.png`);
     await client.create({
       _type: "product",
       name: p.name,
@@ -141,7 +148,7 @@ async function main() {
     console.log(`Created ${p.name}`);
   }
 
-  console.log("Done! Open /studio to edit products.");
+  console.log("Done! Open http://localhost:3000/studio and add real photos.");
 }
 
 main().catch((e) => {
