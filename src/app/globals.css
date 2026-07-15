@@ -283,10 +283,10 @@ img {
 
 .hero__photo {
   object-fit: cover;
-  object-position: center 35%;
+  object-position: center 42%;
   transform: scale(1.06);
   animation: heroDrift 22s ease-in-out infinite alternate;
-  filter: saturate(1.08) contrast(1.04);
+  filter: saturate(1.12) contrast(1.06) brightness(0.92);
 }
 
 .hero__veil {

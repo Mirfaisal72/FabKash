@@ -35,6 +35,7 @@ export default async function HomePage() {
             priority
             sizes="100vw"
             className="hero__photo"
+            style={{ objectPosition: brand.heroImagePosition }}
           />
           <div className="hero__veil" />
           <div className="hero__glow" />
@@ -43,8 +44,8 @@ export default async function HomePage() {
           <p className="hero__brand">{brand.name}</p>
           <h1 className="hero__headline">{brand.tagline}</h1>
           <p className="hero__support">
-            Soft pashmina blends and fine wool wraps — made to feel intimate,
-            look effortless, and gift beautifully.
+            Hand-finished wraps in wool and pashmina blends — soft drape, fine
+            weave, and the quiet elegance of Kashmir craft.
           </p>
           <div className="hero__actions">
             <Link href="/shop" className="btn btn--teal btn--hero">
