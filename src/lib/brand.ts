@@ -1,9 +1,9 @@
 export const brand = {
-  name: "FabKash Handloom",
+  name: "Phamb Kashmir",
   tagline: "Soft wraps for everyday elegance",
   description:
     "Hand-picked shawls in wool, pashmina blends, and fine weaves — made to drape, gift, and wear through every season.",
-  whatsapp: "919876543210",
+  whatsapp: "7006162077",
   instagram: "fabkash.handloom",
   email: "hello@fabkash.com",
   currency: "INR" as const,
