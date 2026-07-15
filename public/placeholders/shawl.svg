@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" fill="none">
+  <rect width="800" height="1000" fill="#D5DEE5"/>
+  <rect x="120" y="220" width="560" height="560" fill="#1A6B6A" opacity="0.2"/>
+  <text x="400" y="520" text-anchor="middle" fill="#12181F" font-family="Segoe UI, sans-serif" font-size="42" opacity="0.55">Loomora</text>
+</svg>
