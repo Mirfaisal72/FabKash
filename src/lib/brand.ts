@@ -7,9 +7,6 @@ export const brand = {
   instagram: "fabkash.handloom",
   email: "hello@fabkash.com",
   currency: "INR" as const,
-  /** Full-bleed homepage hero — local Kashmiri pashmina / Sozni embroidery photo */
-  heroImage: "/hero-shawl.jpg",
-  heroImagePosition: "center 40%",
 };
 
 export function formatInr(amount: number) {

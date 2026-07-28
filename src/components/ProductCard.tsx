@@ -6,6 +6,7 @@ import type { SanityProduct } from "@/sanity/types";
 
 export function ProductCard({ product }: { product: SanityProduct }) {
   const image = imageUrl(product.images?.[0]);
+  const soldOut = product.stock <= 0;
 
   return (
     <article className="product-tile">
@@ -17,9 +18,18 @@ export function ProductCard({ product }: { product: SanityProduct }) {
           height={1000}
           className="product-tile__img"
         />
+        <span className="product-tile__shade" aria-hidden />
+        <span className="product-tile__cta" aria-hidden>
+          View piece <span className="product-tile__cta-arrow">→</span>
+        </span>
+        {soldOut ? (
+          <span className="product-tile__flag">Sold out</span>
+        ) : product.featured ? (
+          <span className="product-tile__flag product-tile__flag--soft">Featured</span>
+        ) : null}
       </Link>
       <div className="product-tile__meta">
-        <p className="eyebrow">{product.fabric}</p>
+        <p className="eyebrow">{product.category?.name || product.fabric}</p>
         <h3>
           <Link href={`/shop/${product.slug}`}>{product.name}</Link>
         </h3>
