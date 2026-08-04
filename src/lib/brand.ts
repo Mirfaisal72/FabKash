@@ -1,5 +1,5 @@
 export const brand = {
-  name: "Phamb Kashmir",
+  name: "FabKash Handloom",
   tagline: "Soft luxury you can wrap around yourself",
   description:
     "Hand-picked shawls in wool, pashmina blends, and fine weaves — made to drape, gift, and wear through every season.",
